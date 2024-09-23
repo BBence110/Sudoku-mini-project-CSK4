@@ -1,16 +1,3 @@
-@startuml
-left to right direction
-skinparam packageStyle rectangle
-actor "Player" as p1
-rectangle "Sudoku Website"{
-p1 -->(Cella)
-p1 -->(Start)
-p1 -->(Restart)
-p1 -->(Méret választó ??)
-}
-@enduml
-
----------------------
 import org.junit.jupiter.api.Test;
 
 public class test1 {
