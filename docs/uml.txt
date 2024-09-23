@@ -1,11 +1,15 @@
 @startuml
 left to right direction
 skinparam packageStyle rectangle
-actor "Player" as p1
-rectangle "Sudoku Website"{
-p1 -->(Cella)
-p1 -->(Start)
-p1 -->(Restart)
-p1 -->(Méret választó ??)
+actor "Player" as a1
+rectangle "Sudoku BE" {
+  (Get table)
+  (Table check)
+}
+rectangle "Sudoku Website" {
+  a1 --> (Start)
+  (Start) ..> (Get table) : <<include>>
+  a1 --> (Play)
+  (Play) ..> (Table check) : <<include>>
 }
 @enduml
