@@ -3,16 +3,22 @@ package hu.unideb.inf.sudoku.controller;
 import hu.unideb.inf.sudoku.data.SudokuDTO;
 import hu.unideb.inf.sudoku.mapper.SudokuMapper;
 import hu.unideb.inf.sudoku.service.SudokuService;
+import hu.unideb.inf.sudoku.util.Solver;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
 public class SudokuController {
     private final SudokuService service;
-    private static final long ID_MAX = 10; //utananezni
+    private Solver solver;
 
-    public SudokuController(SudokuService service) {
+    private static final long ID_MAX = 3; //utananezni
+
+    public SudokuController(SudokuService service, Solver solver) {
         this.service = service;
+        this.solver = solver;
     }
 
     @GetMapping("/getBoard")
@@ -27,8 +33,8 @@ public class SudokuController {
     }
 
     @PostMapping("/postResult")
-    public SudokuDTO result(@RequestBody SudokuDTO dto) {
-        //TODO
-        return null;
+    @GetMapping("/getResult")
+    public boolean result(@RequestBody List<Integer> board) {
+        return solver.isSolved(board);
     }
 }

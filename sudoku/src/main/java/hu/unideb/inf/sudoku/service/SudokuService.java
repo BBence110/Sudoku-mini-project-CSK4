@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SudokuService {
+
     private final SudokuRepository repository;
 
     public SudokuService(SudokuRepository repository) {
@@ -14,7 +15,6 @@ public class SudokuService {
     }
 
     public SudokuEntity getSudokuBoardById(long sudId) {
-        System.out.println(sudId);
         return repository.findById(sudId).orElse(null);
     }
 
