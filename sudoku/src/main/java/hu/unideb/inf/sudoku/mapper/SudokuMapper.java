@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class SudokuMapper {
+
     public static SudokuDTO mapToSudokuDTO(SudokuEntity entity) {
         List<Integer> nums = new ArrayList<>();
         String[] board = entity.getBoard().split(",");
