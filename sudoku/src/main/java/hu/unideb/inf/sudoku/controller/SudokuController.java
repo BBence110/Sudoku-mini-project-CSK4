@@ -21,6 +21,7 @@ public class SudokuController {
         this.solver = solver;
     }
 
+    //TODO
     @GetMapping("/getBoard")
     public SudokuDTO getRandomBoard() {
         long rand = (long) (Math.random() * ID_MAX) + 1;
@@ -33,7 +34,6 @@ public class SudokuController {
     }
 
     @PostMapping("/postResult")
-    @GetMapping("/getResult")
     public boolean result(@RequestBody List<Integer> board) {
         return solver.isSolved(board);
     }
