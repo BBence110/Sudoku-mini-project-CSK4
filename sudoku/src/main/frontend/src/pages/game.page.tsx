@@ -2,7 +2,15 @@ import { useEffect } from "react";
 import { checkSudokuBoard, getSudokuBoard } from "../services/sudoku.service";
 import { Timer } from "../components/timer.component";
 import { Center } from "../components/center.component";
-import { setSudokuState, useSudoku, useSudokuState } from "../stores/sudoku.store";
+import { isWinner$, setSudoku, time$, useError, useInitialBoard, useIsLoading, useIsWinner, useSudoku } from "../stores/sudoku.store";
+import { filter, Subscription } from "rxjs";
+import { startTimer } from "../services/timer.service";
+
+function Winner() {
+    return (<Center>
+        <p className="text-4xl">Congrats! You've won the game in {time$.getValue()}!</p>
+    </Center>);
+}
 
 function getBorderRight(i: number) {
     if (i % 4 == 1) return " border-r-4";
@@ -17,42 +25,48 @@ function getBorderBottom(i: number) {
 }
 
 export function Game() {
-    const state = useSudokuState();
     const sudoku = useSudoku();
+    const initialBoard = useInitialBoard();
+    const isLoading = useIsLoading();
+    const isWinner = useIsWinner();
+    const error = useError();
 
     useEffect(() => {
+        const subs = new Subscription;
 
         getSudokuBoard();
+        subs.add(checkSudokuBoard());
+        const timerSub = startTimer();
+        subs.add(timerSub);
+        subs.add(isWinner$.pipe(filter(w => w)).subscribe(timerSub.unsubscribe));
 
-        const sub = checkSudokuBoard().subscribe((isWinner) => {
-            // do something when user is winner
-            console.log(isWinner);
-        });
-
-        return () => sub.unsubscribe();
+        return () => subs.unsubscribe();
     }, []);
 
-    if (state.isLoading) {
+    if (isLoading) {
         return <Center><p className="text-4xl">Loading...</p></Center>;
     }
 
-    if (state.error || !sudoku) {
+    if (error || !sudoku || !initialBoard) {
         return (<Center>
-            <p className="text-4xl">Failed to load a board :(</p>
+            <p className="text-4xl">{error?.message ?? "Failed to load a board :("}</p>
         </Center>)
+    }
+
+    if (isWinner) {
+        return <Winner />
     }
 
     const onChange = async (boardCell: number, value: string) => {
         let num: number | null;
-        if (value === "") {
+        if (value === "" || value === "Backspace") {
             num = null
         } else {
             num = Number(value[value.length - 1])
             if (Number.isNaN(num) || num <= 0 || num > 4) num = sudoku.board[boardCell];
         }
-        sudoku.board[boardCell] = state.initialBoard![boardCell] ?? num;
-        state.sudoku = sudoku;
-        setSudokuState({ ...state });
+        sudoku.board[boardCell] = initialBoard[boardCell] ?? num;
+        setSudoku({ ...sudoku });
     }
 
     return (<Center className="gap-3">
@@ -61,14 +75,15 @@ export function Game() {
             <Timer />
         </div>
         <div className="aspect-square max-w-96 max-h-96 px-4">
-            <div className="grid grid-cols-4 grid-rows-4 border-4 border-black rounded-3xl w-full h-full">
+            <div className="grid grid-cols-4 grid-rows-4 border-4 border-black dark:border-slate-600 rounded-3xl w-full h-full">
                 {sudoku.board.map((value, i) =>
                     <input
                         key={i}
-                        disabled={state.initialBoard![i] !== null}
-                        onChange={(ev) => { ev.preventDefault(); onChange(i, ev.target.value); }}
+                        disabled={initialBoard[i] !== null}
+                        onChange={() => { }}
+                        onKeyUp={(ev) => { ev.preventDefault(); onChange(i, ev.key); }}
                         type="text" pattern="[0-9]" inputMode="numeric"
-                        className={"border-black text-center text-4xl" + (state.initialBoard![i] !== null ? " bg-slate-300" : " bg-transparent") + getBorderRight(i) + getBorderBottom(i)}
+                        className={"border-black dark:border-slate-600 text-center text-4xl" + (initialBoard[i] !== null ? " bg-slate-300 dark:bg-slate-900" : " bg-transparent") + getBorderRight(i) + getBorderBottom(i)}
                         value={value ?? ""}
                     />
                 )}

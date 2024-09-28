@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-        '/api': 'localhost:9090/api' // TODO: change to server's port
+      '/api': 'http://localhost:9090'
     }
   }
 })
