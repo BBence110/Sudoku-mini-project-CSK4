@@ -12,26 +12,24 @@ import java.util.List;
 @RestController
 public class SudokuController {
     private final SudokuService service;
-    private Solver solver;
-
-
+    private final Solver solver;
 
     public SudokuController(SudokuService service, Solver solver) {
         this.service = service;
         this.solver = solver;
     }
 
-    @GetMapping("/getBoard")
+    @GetMapping("/api/getBoard")
     public SudokuDTO getRandomBoard() {
         return service.getRandomBoard();
     }
 
-    @GetMapping("/getBoard/{id}")
+    @GetMapping("/api/getBoard/{id}")
     public SudokuDTO getBoardById(@PathVariable long id) {
         return SudokuMapper.mapToSudokuDTO(service.getSudokuBoardById(id));
     }
 
-    @PostMapping("/postResult")
+    @PostMapping("/api/postResult")
     public boolean result(@RequestBody List<Integer> board) {
         return solver.isSolved(board);
     }
