@@ -14,18 +14,16 @@ public class SudokuController {
     private final SudokuService service;
     private Solver solver;
 
-    private static final long ID_MAX = 3; //utananezni
+
 
     public SudokuController(SudokuService service, Solver solver) {
         this.service = service;
         this.solver = solver;
     }
 
-    //TODO
     @GetMapping("/getBoard")
     public SudokuDTO getRandomBoard() {
-        long rand = (long) (Math.random() * ID_MAX) + 1;
-        return SudokuMapper.mapToSudokuDTO(service.getSudokuBoardById(rand));
+        return service.getRandomBoard();
     }
 
     @GetMapping("/getBoard/{id}")
