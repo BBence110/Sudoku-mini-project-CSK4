@@ -7,13 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class SudokuMapper {
+
+    /**
+     * Splits the entity's board string by commas, converts each value to an integer and handles invalid numbers.
+     *
+     * @param entity object containing the board data as a string
+     * @return a new SudokuDTO with the list of integers and the entity ID
+     */
     public static SudokuDTO mapToSudokuDTO(SudokuEntity entity) {
         List<Integer> nums = new ArrayList<>();
         String[] board = entity.getBoard().split(",");
-        for (int i = 0; i < board.length; i++) {
+        for (String s : board) {
             try {
-                nums.add(Integer.parseInt(board[i]));
+                nums.add(Integer.parseInt(s));
             } catch (NumberFormatException nfe) {
                 System.out.println("Not a number!");
             }
@@ -21,6 +29,12 @@ public class SudokuMapper {
         return new SudokuDTO(nums, entity.getId());
     }
 
+    /**
+     * Joins the list of integers from the DTO's board into a comma separated string.
+     *
+     * @param dto contains the Sudoku board as a list of integers and ID which represents the entity.
+     * @return a SudokuEntity containing the ID and the comma separated string.
+     */
     public static SudokuEntity mapToSudokuEntity(SudokuDTO dto) {
         String boardString = dto.board().stream()
                 .map(String::valueOf)

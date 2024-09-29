@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+/**
+ * Entity class representing a Sudoku board stored in the "SUDOKU" database table.
+ */
 @Entity
 @Table(name = "SUDOKU")
 @Getter
