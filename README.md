@@ -1,9 +1,12 @@
 # Sudoku
 Play sudoku on a webapp
 
+### Project docs
+[Check out the docs!](https://github.com/BBence110/Sudoku-mini-project-CSK4/tree/master/docs)
+
 ### Prerequisites
 - Java 21
-- Spring Boot 2.0.0.RELEASE 
+- Spring Boot 3.3.2
 - Spring boot AOP
 - Maven latest
 - H2 (With the dev profile you can use H2)
