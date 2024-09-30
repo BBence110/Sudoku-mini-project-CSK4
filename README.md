@@ -2,8 +2,7 @@
 Play sudoku on a webapp
 
 ### Prerequisites
-- JSF 2.2.9
-- Java 8
+- Java 21
 - Spring Boot 2.0.0.RELEASE 
 - Spring boot AOP
 - Maven latest
