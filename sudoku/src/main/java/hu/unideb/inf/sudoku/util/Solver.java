@@ -51,7 +51,6 @@ public class Solver {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
                 board[i][j] = nums.get(k);
-                System.out.println(nums.get(k));
                 k++;
             }
         }
@@ -70,7 +69,6 @@ public class Solver {
         //Check in row
         for (int i = 0; i < BOARD_SIZE; i++) {
             if(board[i][col] == num && i != row) {
-                System.out.println("row");
                 return false;
             }
         }
@@ -78,7 +76,6 @@ public class Solver {
         //Check in col
         for (int j = 0; j < BOARD_SIZE; j++) {
             if(board[row][j] == num && j != col) {
-                System.out.println("col");
                 return false;
             }
         }
