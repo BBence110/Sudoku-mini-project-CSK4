@@ -2,6 +2,7 @@ package hu.unideb.inf.sudoku.mapper;
 
 import hu.unideb.inf.sudoku.data.SudokuDTO;
 import hu.unideb.inf.sudoku.entity.SudokuEntity;
+import org.tinylog.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class SudokuMapper {
             try {
                 nums.add(Integer.parseInt(s));
             } catch (NumberFormatException nfe) {
-                System.out.println("Not a number!");
+                Logger.warn("Not a number!");
             }
         }
         return new SudokuDTO(nums, entity.getId());
